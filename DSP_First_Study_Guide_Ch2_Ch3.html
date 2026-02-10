@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSP First Study Guide - Chapters 2 &amp; 3</title>
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$']], displayMath: [['$$','$$']] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+<style>
+  :root {
+    --bg: #ffffff;
+    --text: #1a1a2e;
+    --accent: #0f3460;
+    --highlight: #e94560;
+    --card: #f8f9fa;
+    --border: #dee2e6;
+    --code-bg: #f0f0f5;
+    --success: #2d6a4f;
+    --link: #0f3460;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px 40px 80px;
+  }
+  h1 {
+    font-size: 2em;
+    color: var(--accent);
+    border-bottom: 4px solid var(--highlight);
+    padding-bottom: 12px;
+    margin: 50px 0 20px;
+  }
+  h1:first-of-type { margin-top: 10px; }
+  h2 {
+    font-size: 1.5em;
+    color: var(--accent);
+    margin: 40px 0 15px;
+    border-left: 5px solid var(--highlight);
+    padding-left: 15px;
+  }
+  h3 {
+    font-size: 1.2em;
+    color: var(--text);
+    margin: 25px 0 10px;
+  }
+  h4 {
+    font-size: 1.05em;
+    color: #555;
+    margin: 18px 0 8px;
+  }
+  p { margin: 10px 0; }
+  a { color: var(--link); }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    font-size: 0.95em;
+  }
+  th {
+    background: var(--accent);
+    color: #fff;
+    padding: 10px 14px;
+    text-align: left;
+  }
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  tr:nth-child(even) td { background: var(--card); }
+  .formula-box {
+    background: #eef2ff;
+    border: 2px solid #6c7ae0;
+    border-radius: 8px;
+    padding: 16px 22px;
+    margin: 16px 0;
+    overflow-x: auto;
+  }
+  .formula-box.important {
+    background: #fff3e6;
+    border-color: var(--highlight);
+  }
+  .key-idea {
+    background: #e8f5e9;
+    border-left: 5px solid var(--success);
+    padding: 14px 20px;
+    margin: 16px 0;
+    border-radius: 0 8px 8px 0;
+  }
+  .warning {
+    background: #fff8e1;
+    border-left: 5px solid #f9a825;
+    padding: 14px 20px;
+    margin: 16px 0;
+    border-radius: 0 8px 8px 0;
+  }
+  .example {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 22px;
+    margin: 16px 0;
+  }
+  .example-title {
+    font-weight: bold;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .resource-list {
+    list-style: none;
+    padding: 0;
+  }
+  .resource-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+  }
+  .resource-list li:last-child { border-bottom: none; }
+  .toc {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 25px 30px;
+    margin: 25px 0;
+  }
+  .toc h3 { margin-top: 0; }
+  .toc ul { padding-left: 22px; }
+  .toc li { margin: 4px 0; }
+  .part-divider {
+    border: none;
+    height: 4px;
+    background: linear-gradient(to right, var(--accent), var(--highlight), var(--accent));
+    margin: 50px 0;
+    border-radius: 2px;
+  }
+  .study-day {
+    display: flex;
+    gap: 12px;
+    margin: 8px 0;
+  }
+  .study-day .day-label {
+    background: var(--accent);
+    color: #fff;
+    padding: 2px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    white-space: nowrap;
+    font-size: 0.9em;
+  }
+  .print-note {
+    background: #f3e5f5;
+    border: 2px dashed #9c27b0;
+    border-radius: 8px;
+    padding: 16px 22px;
+    margin: 20px 0;
+    text-align: center;
+    font-weight: bold;
+  }
+  @media print {
+    body { max-width: 100%; padding: 15px; font-size: 11pt; }
+    .formula-box, .key-idea, .example { break-inside: avoid; }
+    h1, h2 { break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<h1>DSP First &mdash; Complete Study Guide: Chapters 2 &amp; 3</h1>
+<p style="font-size:1.15em; color:#555;">Midterm Preparation &mdash; Sinusoids &amp; Spectrum Representation</p>
+
+<div class="toc">
+<h3>Table of Contents</h3>
+<ul>
+  <li><strong>Part 1:</strong> Learning Resources (study without a teacher)</li>
+  <li><strong>Part 2:</strong> Chapter 2 &mdash; Sinusoids (detailed summary)</li>
+  <li><strong>Part 3:</strong> Chapter 3 &mdash; Spectrum Representation (detailed summary)</li>
+  <li><strong>Part 4:</strong> Formula Quick-Reference Sheet (print this!)</li>
+  <li><strong>Part 5:</strong> 15-Day Study Plan for Your Midterm</li>
+</ul>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<hr class="part-divider">
+<h1>Part 1 &mdash; Learning Resources</h1>
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+
+<h2>Video Lectures (Watch These First)</h2>
+<ul class="resource-list">
+  <li><strong>MIT OpenCourseWare &mdash; Digital Signal Processing</strong> (Alan Oppenheim)<br>
+      <a href="https://ocw.mit.edu/courses/res-6-008-digital-signal-processing-spring-2011/video_galleries/video-lectures/" target="_blank">ocw.mit.edu &mdash; DSP Video Lectures</a></li>
+  <li><strong>AllSignalProcessing (Barry Van Veen)</strong> &mdash; 100+ focused DSP videos<br>
+      <a href="https://vanveen.ece.wisc.edu/teaching-resources/" target="_blank">vanveen.ece.wisc.edu</a></li>
+  <li><strong>DSP First Official Lecture Slides</strong> (from the textbook authors)<br>
+      <a href="https://dspfirst.gatech.edu/spfirst/LectureSlides/SPFirstLectureSlides.html" target="_blank">dspfirst.gatech.edu &mdash; Lecture Slides</a></li>
+</ul>
+
+<h2>Interactive Tools (Build Intuition)</h2>
+<ul class="resource-list">
+  <li><strong>Phasor Visualizer</strong> (Desmos): <a href="https://www.desmos.com/calculator/niad5yjthy" target="_blank">desmos.com/calculator/niad5yjthy</a></li>
+  <li><strong>Fourier Series Applet</strong> (add/remove harmonics live): <a href="https://www.falstad.com/fourier/" target="_blank">falstad.com/fourier</a></li>
+  <li><strong>Beautiful Interactive Fourier Intro</strong>: <a href="https://www.jezzamon.com/fourier/" target="_blank">jezzamon.com/fourier</a></li>
+  <li><strong>AM Modulation Simulator</strong>: <a href="https://academo.org/demos/amplitude-modulation/" target="_blank">academo.org &mdash; AM</a></li>
+  <li><strong>Real-time Spectrum Analyzer</strong>: <a href="https://academo.org/demos/spectrum-analyzer/" target="_blank">academo.org &mdash; Spectrum Analyzer</a></li>
+</ul>
+
+<h2>Practice Problems with Solutions</h2>
+<ul class="resource-list">
+  <li><strong>DSP First Official Exercises</strong>: <a href="https://dspfirst.gatech.edu/database/?d=exercises" target="_blank">dspfirst.gatech.edu/database</a></li>
+  <li><strong>DSP First Homework (Ch.2)</strong>: <a href="https://dspfirst.gatech.edu/database/?d=homework&chap=2" target="_blank">dspfirst.gatech.edu &mdash; Ch.2 HW</a></li>
+  <li><strong>Project Rhea Practice Problems</strong>: <a href="https://www.projectrhea.org/rhea/index.php/Digital_signal_processing_practice_problems_list" target="_blank">projectrhea.org &mdash; DSP Problems</a></li>
+</ul>
+
+<h2>Free Textbook Supplements</h2>
+<ul class="resource-list">
+  <li><strong>The Scientist and Engineer's Guide to DSP</strong> (free PDF): <a href="http://www.dspguide.com/pdfbook.htm" target="_blank">dspguide.com</a></li>
+  <li><strong>Mathematics of the DFT</strong> (free online): <a href="https://www.dsprelated.com/freebooks/mdft/" target="_blank">dsprelated.com &mdash; MDFT</a></li>
+</ul>
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<hr class="part-divider">
+<h1>Part 2 &mdash; Chapter 2: Sinusoids</h1>
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+
+<!-- ─────────────────── 2-1 ─────────────────── -->
+<h2>2-1: Tuning-Fork Experiment</h2>
+
+<div class="key-idea">
+<strong>Key idea:</strong> Sinusoids aren't just abstract math &mdash; they arise naturally from physical systems. A tuning fork vibrates and produces a waveform that matches $\;x(t) = A\cos(\omega_0 t + \varphi)\;$ almost exactly.
+</div>
+
+<p>An A-440 tuning fork vibrates at 440&nbsp;Hz, which is "A above middle C." When recorded with a microphone, the waveform oscillates between symmetric limits and repeats with a period of about $T_0 \approx 0.00227$&nbsp;s.</p>
+
+<!-- ─────────────────── 2-2 ─────────────────── -->
+<h2>2-2: Review of Sine and Cosine Functions</h2>
+
+<h3>Critical Properties (memorize these)</h3>
+<table>
+  <tr><th>Property</th><th>Equation</th></tr>
+  <tr><td>Equivalence</td><td>$\sin\theta = \cos(\theta - \tfrac{\pi}{2})$&emsp;or&emsp;$\cos\theta = \sin(\theta + \tfrac{\pi}{2})$</td></tr>
+  <tr><td>Periodicity</td><td>$\cos(\theta + 2\pi k) = \cos\theta$, for any integer $k$</td></tr>
+  <tr><td>Evenness of cosine</td><td>$\cos(-\theta) = \cos\theta$</td></tr>
+  <tr><td>Oddness of sine</td><td>$\sin(-\theta) = -\sin\theta$</td></tr>
+  <tr><td>Zeros of sine</td><td>$\sin(\pi k) = 0$, for any integer $k$</td></tr>
+  <tr><td>Ones of cosine</td><td>$\cos(2\pi k) = 1$, for any integer $k$</td></tr>
+</table>
+
+<h3>Key Trigonometric Identities</h3>
+<table>
+  <tr><th>#</th><th>Identity</th></tr>
+  <tr><td>1</td><td>$\sin^2\theta + \cos^2\theta = 1$</td></tr>
+  <tr><td>2</td><td>$\cos 2\theta = \cos^2\theta - \sin^2\theta$</td></tr>
+  <tr><td>3</td><td>$\sin 2\theta = 2\sin\theta\cos\theta$</td></tr>
+  <tr><td>4</td><td>$\sin(\alpha \pm \beta) = \sin\alpha\cos\beta \pm \cos\alpha\sin\beta$</td></tr>
+  <tr><td>5</td><td>$\cos(\alpha \pm \beta) = \cos\alpha\cos\beta \mp \sin\alpha\sin\beta$</td></tr>
+</table>
+
+<p>Important derived identity:</p>
+<div class="formula-box">
+$$\cos\alpha\;\cos\beta \;=\; \tfrac{1}{2}\cos(\alpha+\beta) + \tfrac{1}{2}\cos(\alpha-\beta)$$
+</div>
+
+<!-- ─────────────────── 2-3 ─────────────────── -->
+<h2>2-3: Sinusoidal Signals</h2>
+
+<h3>The Master Formula</h3>
+<div class="formula-box important">
+$$x(t) = A\cos(\omega_0\, t + \varphi) = A\cos(2\pi f_0\, t + \varphi)$$
+</div>
+
+<h3>The Three Parameters</h3>
+<table>
+  <tr><th>Symbol</th><th>Name</th><th>Units</th><th>Role</th></tr>
+  <tr><td>$A$</td><td>Amplitude</td><td>(same as signal)</td><td>Signal oscillates between $+A$ and $-A$</td></tr>
+  <tr><td>$\omega_0$</td><td>Radian frequency</td><td>rad/s</td><td>Rate of oscillation</td></tr>
+  <tr><td>$f_0 = \omega_0/2\pi$</td><td>Cyclic frequency</td><td>Hz</td><td>Cycles per second</td></tr>
+  <tr><td>$\varphi$</td><td>Phase</td><td>rad</td><td>Shifts the signal in time</td></tr>
+</table>
+
+<h3>2-3.1 &mdash; Frequency and Period</h3>
+<div class="formula-box">
+$$T_0 = \frac{2\pi}{\omega_0} = \frac{1}{f_0}$$
+</div>
+<p>$T_0$ = period (seconds per cycle), $f_0$ = frequency (cycles per second). They are reciprocals.</p>
+<p><strong>Special case:</strong> $f_0 = 0$ gives $x(t) = A\cos(0) = A$ &mdash; a constant, called <strong>DC</strong>.</p>
+
+<h3>2-3.2 &mdash; Phase and Time Shift</h3>
+<div class="formula-box">
+$$\varphi = -\omega_0\, t_1 = -2\pi\!\left(\frac{t_1}{T_0}\right)$$
+</div>
+<div class="formula-box">
+$$t_1 = \frac{-\varphi}{\omega_0} = \frac{-\varphi}{2\pi f_0} = \frac{-\varphi\, T_0}{2\pi}$$
+</div>
+
+<div class="warning">
+<strong>Watch the signs:</strong> A positive time shift $t_1 &gt; 0$ (delay) gives a <em>negative</em> phase, and vice versa. The <strong>principal value</strong> of phase always lies in $(-\pi,\;\pi]$.
+</div>
+
+<div class="example">
+<div class="example-title">Example</div>
+$x(t)=20\cos\!\bigl(2\pi(40)t - 0.4\pi\bigr)$<br>
+$A=20,\; f_0=40\text{ Hz},\; \varphi=-0.4\pi$<br>
+$T_0 = 1/40 = 0.025\text{ s}$<br>
+$t_1 = -(-0.4\pi)\big/(2\pi\cdot 40) = 0.005\text{ s}$ (delayed by 5 ms)
+</div>
+
+<!-- ─────────────────── 2-4 ─────────────────── -->
+<h2>2-4: Sampling and Plotting Sinusoids</h2>
+
+<p><strong>Key question:</strong> How many samples per period do we need?</p>
+<table>
+  <tr><th>Samples/Period</th><th>Quality</th></tr>
+  <tr><td>5</td><td>Too few &mdash; jagged plot</td></tr>
+  <tr><td>10</td><td>Better, still rough</td></tr>
+  <tr><td>50</td><td>Smooth and accurate</td></tr>
+</table>
+
+<div class="key-idea">
+<strong>Remarkable result:</strong> A cosine can be perfectly reconstructed with slightly more than <strong>2 samples per period</strong> (the Nyquist rate). This is explored in Chapter&nbsp;4.
+</div>
+
+<!-- ─────────────────── 2-5 ─────────────────── -->
+<h2>2-5: Complex Exponentials and Phasors &nbsp;<span style="color:var(--highlight);">(Critical Section)</span></h2>
+
+<h3>2-5.1 &mdash; Complex Numbers Review</h3>
+
+<h4>Cartesian (Rectangular) Form</h4>
+<div class="formula-box">
+$$z = x + jy, \qquad x = \operatorname{Re}\{z\},\quad y = \operatorname{Im}\{z\}, \quad j = \sqrt{-1}$$
+</div>
+
+<h4>Polar Form</h4>
+<div class="formula-box">
+$$z = r\,e^{j\theta}, \qquad r = |z| = \sqrt{x^2+y^2},\quad \theta = \arg(z) = \arctan\!\left(\tfrac{y}{x}\right)$$
+</div>
+
+<h4>Converting Between Forms</h4>
+<table>
+  <tr><th>Polar &rarr; Cartesian</th><th>Cartesian &rarr; Polar</th></tr>
+  <tr>
+    <td>$x = r\cos\theta$<br>$y = r\sin\theta$</td>
+    <td>$r = \sqrt{x^2+y^2}$<br>$\theta = \text{atan2}(y,\,x)$</td>
+  </tr>
+</table>
+
+<h3>Euler's Formula &nbsp;<span style="color:var(--highlight);">(The Most Important Equation)</span></h3>
+<div class="formula-box important">
+$$\boxed{e^{j\theta} = \cos\theta + j\sin\theta}$$
+</div>
+
+<h3>2-5.2 &mdash; Complex Exponential Signals</h3>
+<div class="formula-box">
+$$z(t) = A\,e^{j(\omega_0 t + \varphi)} = A\cos(\omega_0 t+\varphi) + jA\sin(\omega_0 t+\varphi)$$
+</div>
+
+<div class="key-idea">
+<strong>The key relationship:</strong>
+$$x(t) = \operatorname{Re}\!\left\{A\,e^{j(\omega_0 t + \varphi)}\right\} = A\cos(\omega_0 t + \varphi)$$
+A real cosine signal is the <em>real part</em> of a complex exponential.
+</div>
+
+<h3>2-5.3 &mdash; The Phasor (Complex Amplitude)</h3>
+<p>Define the <strong>phasor</strong>:</p>
+<div class="formula-box important">
+$$X = A\,e^{j\varphi}$$
+</div>
+<p>Then:</p>
+<div class="formula-box">
+$$z(t) = X\,e^{j\omega_0 t}, \qquad x(t) = \operatorname{Re}\!\left\{X\,e^{j\omega_0 t}\right\}$$
+</div>
+
+<p><strong>What the phasor tells you:</strong></p>
+<ul>
+  <li>$|X| = A$ &mdash; the amplitude</li>
+  <li>$\angle X = \varphi$ &mdash; the phase</li>
+  <li>The frequency $\omega_0$ is separate from the phasor</li>
+</ul>
+
+<p><strong>Rotating phasor interpretation:</strong> $X\,e^{j\omega_0 t}$ traces a circle of radius $A$ in the complex plane. The real cosine is the projection onto the real axis.</p>
+<ul>
+  <li>$\omega_0 &gt; 0$: counterclockwise rotation</li>
+  <li>$\omega_0 &lt; 0$: clockwise rotation</li>
+</ul>
+
+<h3>2-5.4 &mdash; Inverse Euler Formulas &nbsp;<span style="color:var(--highlight);">(Critical)</span></h3>
+<div class="formula-box important">
+$$\cos\theta = \frac{e^{j\theta}+e^{-j\theta}}{2}$$
+</div>
+<div class="formula-box important">
+$$\sin\theta = \frac{e^{j\theta}-e^{-j\theta}}{2j}$$
+</div>
+
+<p>Applied to a cosine signal:</p>
+<div class="formula-box">
+$$A\cos(\omega_0 t+\varphi) = \tfrac{1}{2}X\,e^{j\omega_0 t} + \tfrac{1}{2}X^*e^{-j\omega_0 t}$$
+</div>
+
+<div class="key-idea">
+<strong>Huge insight:</strong> A real cosine is the sum of <strong>two</strong> complex exponentials:
+<ul>
+  <li>One at <strong>positive frequency</strong> $+\omega_0$ with amplitude $\tfrac{1}{2}X$</li>
+  <li>One at <strong>negative frequency</strong> $-\omega_0$ with amplitude $\tfrac{1}{2}X^*$</li>
+</ul>
+This is why <strong>negative frequencies</strong> exist in the spectrum.
+</div>
+
+<!-- ─────────────────── 2-6 ─────────────────── -->
+<h2>2-6: Phasor Addition &nbsp;<span style="color:var(--highlight);">(Very Important for Exams)</span></h2>
+
+<h3>The Problem</h3>
+<p>Add $N$ cosine signals that all share the <strong>same frequency</strong>:</p>
+<div class="formula-box">
+$$\sum_{k=1}^{N} A_k\cos(\omega_0 t + \varphi_k) = A\cos(\omega_0 t + \varphi)$$
+</div>
+<p>The result is <strong>always</strong> a single cosine at the same frequency.</p>
+
+<h3>The Phasor Addition Rule</h3>
+<div class="formula-box important">
+$$\sum_{k=1}^{N} A_k\,e^{j\varphi_k} = A\,e^{j\varphi}$$
+</div>
+
+<p><strong>Steps:</strong></p>
+<ol>
+  <li>Get the phasor for each signal: $X_k = A_k\,e^{j\varphi_k}$</li>
+  <li>Convert each to rectangular: $X_k = x_k + jy_k$</li>
+  <li>Add real parts and imaginary parts</li>
+  <li>Convert the result back to polar to get $A$ and $\varphi$</li>
+</ol>
+
+<div class="example">
+<div class="example-title">Worked Example</div>
+<p><strong>Given:</strong></p>
+$$x_1(t)=1.7\cos(20\pi t + 70^\circ), \qquad x_2(t)=1.9\cos(20\pi t + 200^\circ)$$
+<p>Both are 10&nbsp;Hz signals.</p>
+<p><strong>Step 1 &mdash; Phasors:</strong></p>
+$$X_1 = 1.7\,e^{j\,70\pi/180}, \qquad X_2 = 1.9\,e^{j\,200\pi/180}$$
+<p><strong>Step 2 &mdash; Convert to rectangular:</strong></p>
+$$X_1 = 0.5814 + j\,1.5975, \qquad X_2 = -1.7854 - j\,0.6498$$
+<p><strong>Step 3 &mdash; Add:</strong></p>
+$$X_3 = -1.204 + j\,0.9477$$
+<p><strong>Step 4 &mdash; Convert to polar:</strong></p>
+$$X_3 = 1.5322\,e^{j\,141.79\pi/180}$$
+<p><strong>Result:</strong></p>
+$$x_3(t) = 1.5322\cos(20\pi t + 141.79^\circ)$$
+</div>
+
+<!-- ─────────────────── 2-7 ─────────────────── -->
+<h2>2-7: Physics of the Tuning Fork</h2>
+
+<p>Hooke's law + Newton's second law gives a second-order ODE:</p>
+<div class="formula-box">
+$$m\,\frac{d^2 x(t)}{dt^2} = -k\,x(t)$$
+</div>
+
+<p>Guess $x(t)=A\cos(\omega_0 t)$; the second derivative is $-\omega_0^2 A\cos(\omega_0 t)$. Substituting:</p>
+<div class="formula-box">
+$$\omega_0 = \sqrt{\frac{k}{m}}$$
+</div>
+
+<p><strong>Physical meaning:</strong></p>
+<ul>
+  <li>Stiffer fork (larger $k$) &rArr; <strong>higher frequency</strong></li>
+  <li>Heavier fork (larger $m$) &rArr; <strong>lower frequency</strong></li>
+</ul>
+
+<p>The general solution $x(t)=A\cos(\omega_0 t + \varphi)$ satisfies the ODE for any $A$ and $\varphi$. Only $\omega_0$ is set by the physics. The same math applies to mass-spring systems, pendulums, and LC circuits.</p>
+
+<!-- ─────────────────── 2 Summary ─────────────────── -->
+<h2>Chapter 2 &mdash; Key Takeaways</h2>
+<ol>
+  <li>A sinusoid is defined by <strong>3 parameters:</strong> amplitude $A$, frequency $\omega_0$, phase $\varphi$.</li>
+  <li><strong>Euler's formula</strong> connects complex exponentials to trig: $e^{j\theta}=\cos\theta+j\sin\theta$.</li>
+  <li>A <strong>phasor</strong> $X=Ae^{j\varphi}$ captures amplitude and phase.</li>
+  <li>A real cosine = sum of two complex exponentials at $\pm$ frequencies.</li>
+  <li><strong>Phasor addition</strong> lets you add same-frequency sinusoids easily.</li>
+  <li>Sinusoids arise from second-order differential equations in physics.</li>
+</ol>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<hr class="part-divider">
+<h1>Part 3 &mdash; Chapter 3: Spectrum Representation</h1>
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+
+<!-- ─────────────────── 3-1 ─────────────────── -->
+<h2>3-1: The Spectrum of a Sum of Sinusoids</h2>
+
+<div class="key-idea">
+<strong>The Big Idea:</strong> Any signal made from sinusoids is completely described by listing the frequency, amplitude, and phase of each component. This collection of information <strong>is</strong> the <em>spectrum</em>.
+</div>
+
+<h3>General Sum of Sinusoids</h3>
+<div class="formula-box">
+$$x(t) = A_0 + \sum_{k=1}^{N} A_k\cos(2\pi f_k t + \varphi_k)$$
+</div>
+
+<p>Using inverse Euler, each cosine splits into two complex exponentials:</p>
+<div class="formula-box">
+$$x(t) = X_0 + \sum_{k=1}^{N}\left[\frac{X_k}{2}\,e^{j2\pi f_k t} + \frac{X_k^*}{2}\,e^{-j2\pi f_k t}\right]$$
+</div>
+
+<h3>The $a_k$ Notation</h3>
+<div class="formula-box">
+$$a_k = \begin{cases} A_0 & k=0 \\[4pt] \tfrac{1}{2}A_k\,e^{j\varphi_k} & k\neq 0 \end{cases}$$
+</div>
+
+<p>This gives the compact <strong>synthesis formula</strong>:</p>
+<div class="formula-box important">
+$$x(t) = \sum_{k=-N}^{N} a_k\,e^{j2\pi f_k t}$$
+</div>
+
+<h3>Spectrum Plot</h3>
+<ul>
+  <li>Draw vertical lines at each frequency $f_k$</li>
+  <li>Height = $|a_k|$ (magnitude)</li>
+  <li>Label each line with the complex value of $a_k$</li>
+</ul>
+
+<div class="key-idea">
+<strong>Conjugate symmetry:</strong> For a <em>real</em> signal, $a_{-k} = a_k^*$. Negative-frequency components are always conjugates of their positive-frequency partners.
+</div>
+
+<div class="example">
+<div class="example-title">Example: Two-Sided Spectrum</div>
+<p>For $x(t) = 10 + 14\cos(200\pi t - \tfrac{\pi}{3}) + 8\cos(500\pi t + \tfrac{\pi}{2})$:</p>
+<table>
+  <tr><th>Frequency (Hz)</th><th>$a_k$</th></tr>
+  <tr><td>$0$</td><td>$10$</td></tr>
+  <tr><td>$100$</td><td>$7\,e^{-j\pi/3}$</td></tr>
+  <tr><td>$-100$</td><td>$7\,e^{j\pi/3}$</td></tr>
+  <tr><td>$250$</td><td>$4\,e^{j\pi/2}$</td></tr>
+  <tr><td>$-250$</td><td>$4\,e^{-j\pi/2}$</td></tr>
+</table>
+</div>
+
+<!-- ─────────────────── 3-2 ─────────────────── -->
+<h2>3-2: Sinusoidal Amplitude Modulation</h2>
+
+<h3>3-2.1 &mdash; Multiplying Sinusoids</h3>
+<p>Multiplying two sinusoids produces a <strong>sum</strong> at new frequencies (use inverse Euler).</p>
+
+<div class="example">
+<div class="example-title">Example</div>
+$$x(t) = \cos(\pi t)\;\sin(10\pi t)$$
+After expansion:
+$$x(t) = \tfrac{1}{2}\cos\!\bigl(11\pi t - \tfrac{\pi}{2}\bigr) + \tfrac{1}{2}\cos\!\bigl(9\pi t - \tfrac{\pi}{2}\bigr)$$
+<p>Neither original frequency (0.5&nbsp;Hz, 5&nbsp;Hz) appears &mdash; only 5.5&nbsp;Hz and 4.5&nbsp;Hz.</p>
+</div>
+
+<h3>3-2.2 &mdash; Beat Notes</h3>
+<p>Sum of two equal-amplitude sinusoids with close frequencies:</p>
+<div class="formula-box">
+$$\cos(2\pi f_1 t) + \cos(2\pi f_2 t) = 2\cos(2\pi\Delta\!f\;t)\;\cos(2\pi f_c\,t)$$
+</div>
+<p>where $f_c = \tfrac{1}{2}(f_1+f_2)$ and $\Delta\!f = \tfrac{1}{2}(f_2-f_1)$.</p>
+
+<p><strong>What you hear:</strong> A tone at $f_c$ that fades in and out at rate $2\Delta\!f$. The closer the frequencies, the slower the beating. Musicians use this to tune instruments.</p>
+
+<h3>3-2.3 &mdash; Amplitude Modulation (AM)</h3>
+<div class="formula-box">
+$$x(t) = v(t)\;\cos(2\pi f_c\,t)$$
+</div>
+<p>$v(t)$ is the voice/music signal; $f_c$ is the high-frequency carrier. A DC offset in $v(t)$ keeps the envelope positive for easy detection.</p>
+
+<h3>3-2.4 &mdash; AM Spectrum</h3>
+<div class="key-idea">
+The AM spectrum consists of <strong>frequency-shifted copies</strong> of the spectrum of $v(t)$:
+<ul>
+  <li>One copy centered at $+f_c$</li>
+  <li>One copy centered at $-f_c$</li>
+  <li>Each scaled by $\tfrac{1}{2}$</li>
+</ul>
+</div>
+
+<h3>3-2.5 &mdash; Bandwidth</h3>
+<p><strong>Bandwidth</strong> = range of frequencies occupied by the signal.</p>
+<p>For AM: $\text{BW} = 2\Delta\!f$. AM radio stations are assigned a carrier and a 10&nbsp;kHz bandwidth &mdash; this is <strong>frequency-division multiplexing</strong>.</p>
+
+<!-- ─────────────────── 3-3 ─────────────────── -->
+<h2>3-3: Operations on the Spectrum</h2>
+
+<h3>3-3.1 &mdash; Scaling or Adding a Constant</h3>
+<div class="formula-box">
+$$\gamma\,x(t) \;\longleftrightarrow\; \gamma\,a_k \quad\text{(all frequencies unchanged)}$$
+</div>
+<div class="formula-box">
+$$x(t) + c \;\longleftrightarrow\; \text{DC component becomes } a_0 + c$$
+</div>
+
+<h3>3-3.2 &mdash; Adding Signals</h3>
+<ul>
+  <li>If both signals have a component at the <strong>same frequency</strong>: add their complex amplitudes (phasor addition).</li>
+  <li>If a frequency appears in only one signal: copy it directly.</li>
+  <li>Complex amplitudes at the same frequency <em>might cancel</em>.</li>
+</ul>
+
+<h3>3-3.3 &mdash; Time Shift</h3>
+<div class="formula-box important">
+$$y(t) = x(t - \tau_d) \;\longleftrightarrow\; b_k = a_k\,e^{-j2\pi f_k\,\tau_d}$$
+</div>
+<p>Delaying a signal changes only the <strong>phases</strong> &mdash; magnitudes and frequencies are unchanged.</p>
+
+<div class="example">
+<div class="example-title">Example</div>
+Delay $6\cos(250\pi t)$ by $\tau_d = 2$&nbsp;ms (quarter period):<br>
+Phase change at $f=125$&nbsp;Hz: $e^{-j250\pi(0.002)} = e^{-j\pi/2} = -j$.<br>
+Result: $6\sin(250\pi t)$ &mdash; a quarter-cycle delay turns cosine into sine.
+</div>
+
+<h3>3-3.4 &mdash; Differentiation</h3>
+<div class="formula-box important">
+$$y(t) = \frac{d}{dt}x(t) \;\longleftrightarrow\; b_k = (j2\pi f_k)\,a_k$$
+</div>
+<ul>
+  <li><strong>Kills DC</strong> (multiplied by 0)</li>
+  <li><strong>Boosts high frequencies</strong></li>
+  <li><strong>Adds $\pi/2$ phase shift</strong> (factor of $j$)</li>
+</ul>
+
+<h3>3-3.5 &mdash; Frequency Shifting</h3>
+<p>Multiplying by a <strong>complex exponential</strong>:</p>
+<div class="formula-box">
+$$y(t)=Ae^{j\varphi}\,e^{j2\pi f_c t}\;x(t) \;\longleftrightarrow\; \{(f_k+f_c,\; a_k\,Ae^{j\varphi})\}$$
+</div>
+
+<p>Multiplying by a <strong>real cosine</strong> creates <em>two</em> shifted copies:</p>
+<div class="formula-box important">
+$$y(t)=x(t)\;A\cos(2\pi f_c t + \varphi) \;\longleftrightarrow\; \text{spectrum shifted }\pm f_c,\;\text{each scaled by }\tfrac{A}{2}e^{\pm j\varphi}$$
+</div>
+
+<!-- ─────────────────── 3-4 ─────────────────── -->
+<h2>3-4: Periodic Waveforms</h2>
+
+<h3>Harmonic Frequencies</h3>
+<div class="formula-box">
+$$x(t) = A_0 + \sum_{k=1}^{N} A_k\cos(2\pi k F_0\,t + \varphi_k)$$
+</div>
+<p>where $f_k = kF_0$ is the $k$th <strong>harmonic</strong> and $F_0 = 1/T_0$ is the <strong>fundamental frequency</strong>.</p>
+
+<h3>Finding the Fundamental Frequency</h3>
+<div class="formula-box important">
+$$F_0 = \gcd(f_1,\; f_2,\; \ldots,\; f_N)$$
+</div>
+
+<div class="example">
+<div class="example-title">Example</div>
+Frequencies: 12, 20, 60&nbsp;Hz &rArr; $F_0 = \gcd(12,20,60)=4$&nbsp;Hz.<br>
+12&nbsp;Hz is the 3rd harmonic, 20&nbsp;Hz the 5th, 60&nbsp;Hz the 15th.
+</div>
+
+<div class="warning">
+<strong>Periodicity requires harmonic frequencies.</strong> If the frequencies have no common divisor (e.g., irrational ratios), the signal is <strong>not periodic</strong>.
+</div>
+
+<h3>Complex Exponential Form</h3>
+<div class="formula-box">
+$$x(t) = \sum_{k=-N}^{N} a_k\,e^{j2\pi k F_0 t}$$
+</div>
+
+<!-- ─────────────────── 3-5 ─────────────────── -->
+<h2>3-5: Fourier Series &nbsp;<span style="color:var(--highlight);">(Very Important)</span></h2>
+
+<div class="key-idea">
+<strong>Core question:</strong> Can every periodic signal be written as a sum of harmonically related sinusoids?<br>
+<strong>Answer: Yes</strong> (with possibly infinite terms).
+</div>
+
+<h3>Fourier Synthesis (spectrum &rarr; signal)</h3>
+<div class="formula-box important">
+$$x(t) = \sum_{k=-\infty}^{\infty} a_k\,e^{j(2\pi/T_0)\,k\,t}$$
+</div>
+
+<h3>Fourier Analysis (signal &rarr; spectrum)</h3>
+<div class="formula-box important">
+$$a_k = \frac{1}{T_0}\int_0^{T_0} x(t)\;e^{-j(2\pi/T_0)\,k\,t}\;dt$$
+</div>
+
+<h3>DC Component ($k=0$)</h3>
+<div class="formula-box">
+$$a_0 = \frac{1}{T_0}\int_0^{T_0} x(t)\;dt = \text{average value of }x(t)\text{ over one period}$$
+</div>
+
+<h3>Example: Full-Wave Rectified Sine (FWRS)</h3>
+<p>Signal: $x(t) = |\sin(2\pi t/T_1)|$, period $T_0 = T_1/2$.</p>
+
+<p>After evaluating the Fourier integral:</p>
+<div class="formula-box">
+$$a_k = \frac{2}{\pi(1 - 4k^2)}$$
+</div>
+
+<table>
+  <tr><th>$k$</th><th>$a_k$</th><th>Approximate value</th></tr>
+  <tr><td>0</td><td>$2/\pi$</td><td>$0.6366$ (DC)</td></tr>
+  <tr><td>1</td><td>$-2/(3\pi)$</td><td>$-0.2122$</td></tr>
+  <tr><td>2</td><td>$-2/(15\pi)$</td><td>$-0.04244$</td></tr>
+  <tr><td>3</td><td>$-2/(35\pi)$</td><td>$-0.01819$</td></tr>
+</table>
+
+<p>All coefficients are <strong>real</strong>. Magnitudes fall off as $k^{-2}$.</p>
+<ul>
+  <li>$N=4$ harmonics: rough approximation</li>
+  <li>$N=9$ harmonics: very close to the true signal</li>
+</ul>
+
+<!-- ─────────────────── 3-6 ─────────────────── -->
+<h2>3-6: Time&ndash;Frequency Spectrum</h2>
+
+<p>Real signals (music, speech) have frequency content that <strong>changes with time</strong>. A single spectrum doesn't capture this.</p>
+
+<h3>Piano Key Frequencies</h3>
+<p>Adjacent keys: frequency ratio $r = 2^{1/12} \approx 1.0595$. Reference: A-440 = key 49.</p>
+<div class="formula-box">
+$$f(\text{key }n) = 440 \times 2^{(n-49)/12} \;\text{Hz}$$
+</div>
+<p>Middle C (key 40): $f = 440 \times 2^{-9/12} \approx 261.6$&nbsp;Hz.</p>
+
+<h3>The Spectrogram</h3>
+<p>A spectrogram is a 2-D plot: <strong>x-axis</strong> = time, <strong>y-axis</strong> = frequency, <strong>color/darkness</strong> = amplitude. Computed by doing Fourier analysis on short overlapping segments of the signal.</p>
+
+<!-- ─────────────────── 3-7 ─────────────────── -->
+<h2>3-7: Frequency Modulation &amp; Chirp Signals</h2>
+
+<h3>Generalized Cosine</h3>
+<div class="formula-box">
+$$x(t) = A\cos\!\bigl(\psi(t)\bigr)$$
+</div>
+<p>where $\psi(t)$ is the <strong>angle function</strong>.</p>
+
+<h3>Instantaneous Frequency</h3>
+<div class="formula-box important">
+$$f_i(t) = \frac{1}{2\pi}\,\frac{d\psi(t)}{dt} \quad\text{(Hz)}$$
+</div>
+
+<table>
+  <tr><th>Angle function $\psi(t)$</th><th>$f_i(t)$</th><th>Signal type</th></tr>
+  <tr><td>$\omega_0 t + \varphi$</td><td>$f_0$ (constant)</td><td>Sinusoid</td></tr>
+  <tr><td>$2\pi\mu t^2 + 2\pi f_0 t + \varphi$</td><td>$2\mu t + f_0$ (linear)</td><td>Chirp</td></tr>
+</table>
+
+<h3>Chirp (Linear FM) Signal</h3>
+<p>Sweeps from $f_1$ to $f_2$ during $0 \le t \le T_2$:</p>
+<div class="formula-box">
+$$f_i(t) = \frac{f_2 - f_1}{T_2}\;t + f_1$$
+</div>
+<div class="formula-box">
+$$\psi(t) = \pi\!\left(\frac{f_2-f_1}{T_2}\right)t^2 + 2\pi f_1\,t + \varphi$$
+</div>
+
+<div class="example">
+<div class="example-title">Example: Chirp from 300 Hz to 800 Hz in 0.5 s</div>
+$$f_i(t) = 1000t + 300\;\text{Hz}$$
+$$\psi(t) = 1000\pi t^2 + 600\pi t + \varphi$$
+$$x(t) = \cos(1000\pi t^2 + 600\pi t + \varphi)$$
+The spectrogram shows a diagonal line from $(0,\;300)$ to $(0.5,\;800)$.
+</div>
+
+<!-- ─────────────────── 3 Summary ─────────────────── -->
+<h2>Chapter 3 &mdash; Key Takeaways</h2>
+<ol>
+  <li><strong>The spectrum</strong> = set of $(f_k,\,a_k)$ pairs representing a signal.</li>
+  <li><strong>Two-sided spectrum</strong> includes $\pm$ frequencies; real signals have conjugate symmetry.</li>
+  <li><strong>Multiplying sinusoids</strong> produces new frequencies (sum and difference).</li>
+  <li><strong>AM</strong> shifts spectrum copies to $\pm f_c$.</li>
+  <li><strong>Bandwidth</strong> = range of frequencies in the signal.</li>
+  <li><strong>Time shift</strong> changes phases only.</li>
+  <li><strong>Differentiation</strong> boosts high frequencies, kills DC.</li>
+  <li><strong>Frequency shifting</strong> moves the entire spectrum.</li>
+  <li><strong>Periodic signals</strong> have harmonic spectra (integer multiples of $F_0$).</li>
+  <li><strong>Fourier series</strong> decomposes any periodic signal into harmonics.</li>
+  <li><strong>Spectrograms</strong> show time-varying frequency content.</li>
+  <li><strong>Chirp signals</strong> have linearly varying instantaneous frequency.</li>
+</ol>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<hr class="part-divider">
+<h1>Part 4 &mdash; Formula Quick-Reference Sheet</h1>
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+
+<div class="print-note">Print this section for your study sessions!</div>
+
+<h3>Sinusoid Basics</h3>
+<div class="formula-box">
+$$x(t) = A\cos(2\pi f_0 t + \varphi), \qquad T_0 = \frac{1}{f_0}, \qquad \varphi = -2\pi\!\left(\frac{t_1}{T_0}\right)$$
+</div>
+
+<h3>Euler &amp; Inverse Euler</h3>
+<div class="formula-box">
+$$e^{j\theta} = \cos\theta + j\sin\theta$$
+$$\cos\theta = \frac{e^{j\theta}+e^{-j\theta}}{2}, \qquad \sin\theta = \frac{e^{j\theta}-e^{-j\theta}}{2j}$$
+</div>
+
+<h3>Phasor Representation</h3>
+<div class="formula-box">
+$$X = Ae^{j\varphi}, \qquad x(t) = \operatorname{Re}\!\left\{Xe^{j\omega_0 t}\right\}$$
+</div>
+
+<h3>Cosine as Two Exponentials</h3>
+<div class="formula-box">
+$$A\cos(\omega_0 t + \varphi) = \tfrac{1}{2}Xe^{j\omega_0 t} + \tfrac{1}{2}X^*e^{-j\omega_0 t}$$
+</div>
+
+<h3>Phasor Addition</h3>
+<div class="formula-box">
+$$\sum_k A_k\cos(\omega_0 t+\varphi_k) = A\cos(\omega_0 t + \varphi), \quad\text{where}\quad Ae^{j\varphi} = \sum_k A_k e^{j\varphi_k}$$
+</div>
+
+<h3>Fourier Series</h3>
+<div class="formula-box">
+$$\textbf{Synthesis:}\quad x(t) = \sum_{k=-\infty}^{\infty} a_k\,e^{j2\pi kF_0 t}$$
+$$\textbf{Analysis:}\quad a_k = \frac{1}{T_0}\int_0^{T_0}x(t)\,e^{-j2\pi kF_0 t}\,dt$$
+$$\textbf{DC:}\quad a_0 = \frac{1}{T_0}\int_0^{T_0}x(t)\,dt$$
+</div>
+
+<h3>Fundamental Frequency</h3>
+<div class="formula-box">
+$$F_0 = \gcd(f_1,\;f_2,\;\ldots,\;f_N), \qquad T_0 = \frac{1}{F_0}$$
+</div>
+
+<h3>Spectrum Operations</h3>
+<div class="formula-box">
+$$\text{Scaling:}\quad \gamma\,x(t) \;\longleftrightarrow\; \gamma\,a_k$$
+$$\text{Time shift:}\quad x(t-\tau) \;\longleftrightarrow\; a_k\,e^{-j2\pi f_k \tau}$$
+$$\text{Derivative:}\quad \frac{d}{dt}x(t) \;\longleftrightarrow\; (j2\pi f_k)\,a_k$$
+$$\text{Freq.\ shift:}\quad x(t)\,e^{j2\pi f_c t} \;\longleftrightarrow\; a_k \;\text{at}\; (f_k + f_c)$$
+</div>
+
+<h3>Instantaneous Frequency &amp; Chirp</h3>
+<div class="formula-box">
+$$f_i(t) = \frac{1}{2\pi}\frac{d\psi}{dt}, \qquad \mu = \frac{f_2 - f_1}{T_2}$$
+$$x(t) = \cos\!\left(\pi\mu\,t^2 + 2\pi f_1\,t + \varphi\right)$$
+</div>
+
+<h3>Complex Number Operations</h3>
+<div class="formula-box">
+$$\text{Addition:}\quad (x_1+jy_1)+(x_2+jy_2) = (x_1+x_2)+j(y_1+y_2)$$
+$$\text{Multiplication:}\quad r_1 e^{j\theta_1}\cdot r_2 e^{j\theta_2} = r_1 r_2\,e^{j(\theta_1+\theta_2)}$$
+$$\text{Conjugate:}\quad (re^{j\theta})^* = re^{-j\theta}$$
+$$\text{Magnitude:}\quad |x+jy| = \sqrt{x^2+y^2}$$
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+<hr class="part-divider">
+<h1>Part 5 &mdash; 15-Day Study Plan</h1>
+<!-- ═══════════════════════════════════════════════════════════════════ -->
+
+<h2>Week 1 (Days 1&ndash;7): Core Understanding</h2>
+
+<div class="study-day"><span class="day-label">Day 1&ndash;2</span><span>Re-read &sect;2-5 to &sect;2-6 (complex exponentials + phasors). Work Exercises 2.6, 2.7, 2.8.</span></div>
+<div class="study-day"><span class="day-label">Day 3&ndash;4</span><span>Study &sect;3-1 to &sect;3-3 (spectrum, AM, operations). Work Exercises 3.1, 3.2, 3.3.</span></div>
+<div class="study-day"><span class="day-label">Day 5&ndash;6</span><span>Study &sect;3-4 to &sect;3-7 (periodic signals, Fourier series, chirps). Work Exercises 3.4, 3.5.</span></div>
+<div class="study-day"><span class="day-label">Day 7</span><span>Review formula sheet. Do problems P-2.10, P-2.11, P-3.2, P-3.8.</span></div>
+
+<h2>Week 2 (Days 8&ndash;15): Problem Solving</h2>
+
+<div class="study-day"><span class="day-label">Day 8&ndash;9</span><span>Phasor addition problems: P-2.14, P-2.15, P-2.17.</span></div>
+<div class="study-day"><span class="day-label">Day 10&ndash;11</span><span>Spectrum problems: P-3.1, P-3.6, P-3.11, P-3.14.</span></div>
+<div class="study-day"><span class="day-label">Day 12&ndash;13</span><span>AM / frequency shifting: P-3.9, P-3.16, P-3.17.</span></div>
+<div class="study-day"><span class="day-label">Day 14</span><span>Chirp / FM problems: P-3.21, P-3.22, P-3.24.</span></div>
+<div class="study-day"><span class="day-label">Day 15</span><span>Full review &mdash; redo any problem you got wrong. Drill the formula sheet.</span></div>
+
+<h2>Most Likely Exam Topics (ranked)</h2>
+<ol>
+  <li>Phasor addition (combining same-frequency sinusoids)</li>
+  <li>Computing and plotting the two-sided spectrum</li>
+  <li>Euler's formula and inverse Euler conversions</li>
+  <li>Spectrum operations (time shift, differentiation, frequency shift)</li>
+  <li>Finding fundamental frequency and period</li>
+  <li>Fourier series coefficients</li>
+  <li>AM spectrum / frequency shifting</li>
+  <li>Instantaneous frequency and chirp signals</li>
+</ol>
+
+<p style="text-align:center; margin-top:40px; color:#888; font-style:italic;">Good luck with your midterm!</p>
+
+</body>
+</html>
